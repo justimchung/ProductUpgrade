@@ -30,6 +30,21 @@ class TestUtil(unittest.TestCase):
         cost = getCost(self.aSky, self.p)
         self.assertEqual(cost, 6)
 
+    def test_k_dom_by_points(self):
+        skylines = [[6,9,6],[8,5,6],[6,5,7]]
+        result = k_dom_by_points(self.p, 2, skylines)
+        self.assertTrue(result)
+
+        result = k_dom_by_points([1,1,1], 2, skylines)
+        self.assertFalse(result)
+
+        result = k_dom_by_points(self.p, 3, skylines)
+        self.assertTrue(result)
+
+        result = k_dom_by_points([5, 10, 10], 3, skylines)
+        self.assertFalse(result)
+
+
 
 
 if __name__ == '__main__':

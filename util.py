@@ -17,6 +17,24 @@ def k_dom_by_point(p, kValue, aSkyline):
 
     return isKDom, domSK
 
+def k_dom_by_points(p, kValue, points):
+    ''' Test whether p can be k-dominated by any point residing in points
+    :param p: the point we what to test
+    :param kValue: the k value of the k-domination test
+    :param points: a set of points that may k-dominate p
+    :return: return True if a point in points can k-dominate p otherwise return False
+    '''
+    isKDom = False
+    domSK = points[0]
+
+    for sk in points:
+        isKDom, domSK = k_dom_by_point(p, kValue, sk)
+
+        if isKDom == True:
+            break
+
+    return (isKDom)
+
 def getCost(pUpgrade, pOriginal):
     '''Return the upgrade cost for upgrading pOriginal to pUpgrade'''
     cost = 0
