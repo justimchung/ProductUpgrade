@@ -1,3 +1,5 @@
+import numpy as np
+
 def k_dom_by_point(p, kValue, aSkyline):
     ''' Test whether point p is k-dominated by point aSkyline
     return True if p is k-dominated by aSkyline; otherwise false'''
@@ -41,4 +43,13 @@ def getCost(pUpgrade, pOriginal):
     for i in range(len(pUpgrade)):
         cost += (pOriginal[i] - pUpgrade[i])
     return cost
+
+def getCost2(pUpgrade, pOriginal):
+    '''Return the upgrade cost for upgrading pOriginal to pUpgrade'''
+
+    return np.sum(np.subtract(pOriginal, pUpgrade))
+
+
+
+
 
