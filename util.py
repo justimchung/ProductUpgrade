@@ -1,13 +1,5 @@
 import numpy as np
 
-def k_dom_help_function(a, b):
-    if a > b:
-        return 1
-    elif a == b:
-        return 0
-    else:
-        return -1
-
 def k_dom_by_point_numpy(p, kValue, aSkyline):
     ''' Test whether point p is k-dominated by point aSkyline
         return True if p is k-dominated by aSkyline; otherwise false'''
