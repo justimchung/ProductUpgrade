@@ -11,9 +11,9 @@ def k_dom_help_function(a, b):
 def k_dom_by_point_numpy(p, kValue, aSkyline):
     ''' Test whether point p is k-dominated by point aSkyline
         return True if p is k-dominated by aSkyline; otherwise false'''
-    vfunc = np.vectorize(k_dom_help_function)
-    tmpV = vfunc(p, aSkyline)
-    if np.count_nonzero(tmpV == 1) > 0 and np.count_nonzero(tmpV >= 0) >= kValue:
+    tmpV = np.subtract(p, aSkyline)
+
+    if np.count_nonzero(tmpV > 0) > 0 and np.count_nonzero(tmpV >= 0) >= kValue:
         return True, aSkyline
     else:
         return False, None
