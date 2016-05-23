@@ -76,6 +76,16 @@ class TestUtil(unittest.TestCase):
         result = k_dom_by_points_numpy([5, 10, 10], 3, skylines)
         self.assertFalse(result)
 
+    def test_getDominateSubspace_numpy(self):
+        r = getDominateSubspace_numpy(self.p, self.aSky)
+        self.assertTrue(np.array_equal(r, np.array([1,1,1])))
+        r = getDominateSubspace_numpy(self.p, self.notSky)
+        self.assertTrue(np.array_equal(r, np.array([0,0,0])))
+        r = getDominateSubspace_numpy(self.p, self.twoDomSky)
+        self.assertTrue(np.array_equal(r, np.array([1,1,0])))
+        r = getDominateSubspace_numpy(self.p, self.oneDomSky)
+        self.assertTrue(np.array_equal(r, np.array([0,0,1])))
+
 
 
 

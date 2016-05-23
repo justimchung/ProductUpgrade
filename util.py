@@ -79,6 +79,12 @@ def getCost_numpy(pUpgrade, pOriginal):
     return np.sum(np.subtract(pOriginal, pUpgrade))
 
 
+def getDominateSubspace_numpy(p, psky):
+    '''Return a list A which indicate the subspace that psky is superial than p.'''
+    vfunc = np.vectorize(lambda v_from_p, v_from_psky: 0 if v_from_p <= v_from_psky else 1)
+    return vfunc(p, psky)
+
+
 
 
 
