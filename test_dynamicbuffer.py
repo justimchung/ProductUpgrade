@@ -3,7 +3,7 @@ import unittest
 
 class TestUtil(unittest.TestCase):
     def setUp(self):
-        self.dBUffer = DynamicBuffer("int16", 10, 2)
+        self.dBUffer = DynamicBuffer(10, 2)
 
     def test_appendData(self):
         self.dBUffer.append([10, 10])
