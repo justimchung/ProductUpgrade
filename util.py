@@ -80,10 +80,23 @@ def getCost_numpy(pUpgrade, pOriginal):
 
 
 def getDominateSubspace_numpy(p, psky):
-    '''Return a list A which indicate the subspace that psky is superial than p.'''
-    vfunc = np.vectorize(lambda v_from_p, v_from_psky: 0 if v_from_p <= v_from_psky else 1)
-    return vfunc(p, psky)
+    '''Return a list A which indicate the subspace that psky is superial over p.'''
+    l = []
+    for i in range(len(p)):
+        if p[i] > psky[i]:
+            l.append(i)
+    return l
 
+def getSubspaceUniqueID_numpy(subspace):
+    """
+    Given a subspace return an unique id of the subspace
+    :param subspace: the subspace to be determined the unique id
+    :return: the unique id of the subspace
+    """
+    uid = 0
+    for i in range(len(subspace)):
+        uid +=  2**(subspace[i])
+    return uid
 
 
 
