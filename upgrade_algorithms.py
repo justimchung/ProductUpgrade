@@ -2,13 +2,11 @@ import numpy as np
 import util
 from Upgrade_Group import UpgradeGroup
 class Upgrade_Algorithm:
-    def __init__(self, uGroup, product):
+    def __init__(self, uGroup):
         self.group = uGroup
 
     def run(self):
         subspace = self.group.getSubspace()
-
-        skyBuffer = self.group.getSkylineBuffer()
 
         p = self.group.getProduct()
 
@@ -22,17 +20,35 @@ class Upgrade_Algorithm:
 
             self.group.sortByDim(dim)
 
-            minDimValue = skyBuffer[dim][0]
-            ptmp[dim] = minDimValue
+            skyBuffer = self.group.getSkylineBuffer()
 
-            uCost = util.getCost_numpy(pMinCost, p)
-            if uCost < cost:
-                cost = uCost
+            dimMinValue = skyBuffer[0][dim] - 1
+            ptmp[dim] = dimMinValue
+
+            ugCost = util.getCost_numpy(ptmp, p)
+            if ugCost < cost:
+                cost = ugCost
                 pMinCost = ptmp
+
+            ptmp2 = np.copy(p)
 
             for j in range(len(skyBuffer) - 1):
                 si = skyBuffer[j]
                 sj = skyBuffer[j + 1]
+
+                for k in range(len(subspace)):
+                    if k == dim:
+                        ptmp2[k] = sj[k] - 1
+                    else:
+                        ptmp2[k] = si[k] - 1
+
+                ugCost = util.getCost_numpy(ptmp2, p)
+                if ugCost < cost:
+                    cost = ugCost
+                    pMinCost = ptmp2
+
+        return pMinCost, cost
+
 
 
 
