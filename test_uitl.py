@@ -78,14 +78,19 @@ class TestUtil(unittest.TestCase):
 
     def test_getDominateSubspace_numpy(self):
         r = getDominateSubspace_numpy(self.p, self.aSky)
-        self.assertTrue(np.array_equal(r, np.array([1,1,1])))
+        self.assertTrue(np.array_equal(r, np.array([0,1,2])))
         r = getDominateSubspace_numpy(self.p, self.notSky)
-        self.assertTrue(np.array_equal(r, np.array([0,0,0])))
+        self.assertTrue(np.array_equal(r, np.array([])))
         r = getDominateSubspace_numpy(self.p, self.twoDomSky)
-        self.assertTrue(np.array_equal(r, np.array([1,1,0])))
+        self.assertTrue(np.array_equal(r, np.array([0,1])))
         r = getDominateSubspace_numpy(self.p, self.oneDomSky)
-        self.assertTrue(np.array_equal(r, np.array([0,0,1])))
+        self.assertTrue(np.array_equal(r, np.array([2])))
 
+    def test_getSubspaceUniqueID_numpy(self):
+        test1 = np.array([1,1,1])
+        self.assertEqual(getSubspaceUniqueID_numpy(test1), 7)
+        test1 = np.array([0,0,0])
+        self.assertEqual(getSubspaceUniqueID_numpy(test1), 0)
 
 
 
