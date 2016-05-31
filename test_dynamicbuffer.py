@@ -18,6 +18,14 @@ class TestUtil(unittest.TestCase):
     def testLen(self):
         self.assertEqual(len(self.dBUffer), 0)
 
+    def test_sortByDim(self):
+        self.dBUffer.append([1,2])
+        self.dBUffer.append([4,1])
+        self.dBUffer.append([0,0])
+        self.dBUffer.sortByDim(1)
+        self.assertEqual(self.dBUffer.buffer[0][0], 0)
+        self.assertEqual(self.dBUffer.buffer[2][0], 1)
+
 if __name__ == '__main__':
     unittest.main()
 
