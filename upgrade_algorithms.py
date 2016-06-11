@@ -54,6 +54,11 @@ class Upgrade_Algorithm:
             pMinCost = ptmp
         return currentMinCost, pMinCost
 
+class New_Upgrade_Algorithm:
+    def __init__(self, uGroup, kValue):
+        self.upgradeGroup = uGroup
+        self.upgAlg = Upgrade_Algorithm(self.upgradeGroup)
+        self.upgradeGroup.kValue = kValue
 
 
 
