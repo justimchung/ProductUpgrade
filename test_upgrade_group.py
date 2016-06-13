@@ -31,5 +31,8 @@ class TestUpgradeGroup(unittest.TestCase):
         subSpace = self.UpgradeGroup.getSubspace()
         self.assertTrue(np.array_equal(subSpace, np.array([0,1])))
 
+    def test_getDim(self):
+        self.assertEqual(2, self.UpgradeGroup.getDIM())
+
 if __name__ == '__main__':
     unittest.main()
