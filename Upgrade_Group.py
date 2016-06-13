@@ -11,6 +11,7 @@ class UpgradeGroup:
     def __init__(self, product, subspace, size, dim, datatype='uint32') :
         self.product = product
         self.subspace = subspace
+        self.Dim = dim
         self.dBuffer = DynamicBuffer(size, dim, datatype)
 
     def addSkylinePoint(self, prod):
@@ -33,4 +34,5 @@ class UpgradeGroup:
     def sortByDim(self, dim):
         self.dBuffer.sortByDim(dim)
 
-
+    def getDIM(self):
+        return self.Dim
