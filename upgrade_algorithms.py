@@ -62,7 +62,6 @@ class Upgrade_Algorithm:
 class New_Upgrade_Algorithm:
     def __init__(self, uGroup, kValue, orgP):
         self.upgradeGroup = uGroup
-        self.upgAlg = Upgrade_Algorithm(self.upgradeGroup)
         self.kValue = kValue
         self.orgP = orgP
         self.minValBuf = np.full(self.upgradeGroup.getDIM(), np.inf)
@@ -72,14 +71,17 @@ class New_Upgrade_Algorithm:
         queue = deque()
         skyBuf = self.upgradeGroup.getSkylineBuffer()
         queue.append(self.upgradeGroup)
-        while(len(queue) != 0):
+        while len(queue) != 0:
             UG = queue.pop()
             upgAlg = Upgrade_Algorithm(UG)
             p, cost = upgAlg.run()
-            if util.k_dom_by_points_numpy(p, self.kValue, skyBuf) == True:
+            if util.k_dom_by_points_numpy(p, self.kValue, skyBuf):
                 self.__classify_points_by_product(p, UG, queue)
             else:
                 self.__modify_minValueBuf(p)
+
+        minCost = util.getCost_numpy(self.minValBuf, self.orgP)
+        return self.minValBuf, minCost
 
 
     def __modify_minValueBuf(self, p):
@@ -88,7 +90,7 @@ class New_Upgrade_Algorithm:
     def __classify_points_by_product(self, p, UG, queue):
         """
         依照 p 將 UG 中的每個元素分類，例如分成在 1,2 維度 dominate 一類，
-        在 2, 3維度的一類這樣。
+        在 2, 3維度的一類這樣。分類完的upgrade group要放入 queue 中。
         :param p: A product
         :param UG: the upgrade group that will be decomposed
         :param queue: the new upgrade group
@@ -97,12 +99,17 @@ class New_Upgrade_Algorithm:
         dict = {}
         skyBuf = UG.getSkylineBuffer()
         for skyP in skyBuf:
+            if not util.k_dom_by_point_numpy(p, self.kValue, skyP):
+                continue
             subSpace = util.getDominateSubspace_numpy(p, skyP)
             id = util.getSubspaceUniqueID_numpy(subSpace)
-            if dict.has_key(id):
+            if id in dict:
                 dict[id].addSkylinePoint(skyP)
             else:
-                dict[id] = UpgradeGroup(self.orgP, subspace=subSpace, size = 25, dim = self.dim)
+                newUG = UpgradeGroup(self.orgP, subspace=subSpace, size = 25, dim = self.dim)
+                newUG.addSkylinePoint(skyP)
+                dict[id] = newUG
+
         for newUG in dict.values():
             queue.append(newUG)
 
