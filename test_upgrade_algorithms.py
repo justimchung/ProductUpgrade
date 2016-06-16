@@ -1,3 +1,4 @@
+# -*-coding: utf-8 -*-
 import unittest
 from upgrade_algorithms import Upgrade_Algorithm
 from upgrade_algorithms import New_Upgrade_Algorithm
@@ -33,14 +34,34 @@ class TestUpgrade_algorithms(unittest.TestCase):
         self.assertEqual(3, minCost)
 
     def test_run_new_upgrade_algorithm_for_full_skyline(self):
+        """
+        測試 new upgrade algorithm，測看看它能不能在 k = 2 以及 dim = 2 的情況下，成功地把產品升
+        級成 skyline product
+        :return: none
+        """
         self.upG = UpgradeGroup(product = np.array([9, 8]), subspace=np.array([0, 1]), size = 5, dim = 2)
         self.upG.addSkylinePoint(np.array([7, 8]))
         self.upG.addSkylinePoint(np.array([8, 6]))
-        self.newUpGradeAlg = New_Upgrade_Algorithm(self.upG, 2)
-        p, minCost = self.newUpGradeAlg.run()
+        newUpGradeAlg = New_Upgrade_Algorithm(self.upG, 2, self.upG.getProduct())
+        p, minCost = newUpGradeAlg.run()
         skyBuf = self.upG.getSkylineBuffer()
         self.assertFalse(k_dom_by_points_numpy(p, 2, skyBuf))
         self.assertEqual(3, minCost)
 
+    def test_run_new_upgrade_algorithm_for_one_dominant_skyline(self):
+        """
+        測試 new upgrade algorithm，測看看它能不能在 k = 1 以及 dim = 2 的情況下，成功地把產品升
+        級成 1-dominant skyline product
+        :return: none
+        """
+        k_value = 1
+        self.upG = UpgradeGroup(product = np.array([9, 8]), subspace=np.array([0, 1]), size = 5, dim = 2)
+        self.upG.addSkylinePoint(np.array([7, 8]))
+        self.upG.addSkylinePoint(np.array([8, 6]))
+        newUpGradeAlg = New_Upgrade_Algorithm(self.upG, k_value, self.upG.getProduct())
+        p, minCost = newUpGradeAlg.run()
+        skyBuf = self.upG.getSkylineBuffer()
+        self.assertFalse(k_dom_by_points_numpy(p, k_value, skyBuf))
+        self.assertEqual(5, minCost)
 if __name__ == '__main__':
     unittest.main()
