@@ -99,14 +99,15 @@ class New_Upgrade_Algorithm:
         dict = {}
         skyBuf = UG.getSkylineBuffer()
         for skyP in skyBuf:
-            if not util.k_dom_by_point_numpy(p, self.kValue, skyP):
+            isKDom, aP = util.k_dom_by_point_numpy(p, self.kValue, skyP)
+            if not isKDom:
                 continue
             subSpace = util.getDominateSubspace_numpy(p, skyP)
             id = util.getSubspaceUniqueID_numpy(subSpace)
             if id in dict:
                 dict[id].addSkylinePoint(skyP)
             else:
-                newUG = UpgradeGroup(self.orgP, subspace=subSpace, size = 25, dim = self.dim)
+                newUG = UpgradeGroup(p, subspace=subSpace, size = 25, dim = self.dim)
                 newUG.addSkylinePoint(skyP)
                 dict[id] = newUG
 
