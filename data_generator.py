@@ -114,7 +114,7 @@ def set_Upper_Bound(aBound):
 def saveDataItemsToFile(fname, points):
     f = open(fname, "w")
     for i in range(len(points)):
-        s = "%d,%s\n" % ((i + 1), (','.join(["%.3f" % (k) for k in points[i]])))
+        s = "%s\n" % (','.join(["%d" % int(k) for k in points[i]]))
         f.write(s)
     f.close()
 
@@ -152,8 +152,8 @@ def GenerateDataForNum_Dimensionalities():
 
 if __name__ == "__main__":
     for iter in range(5):
-        points = generate_Uni_Points(20000, 7)
-        saveDataItemsToFile("data_uni_%d_%d_%d.db" % (20, 7, iter), points)
+        points = generate_Uni_Points(20000, 3)
+        saveDataItemsToFile("data_uni_%d_%d_%d.db" % (20, 3, iter), points)
         # GenerateDataForNum_DataItems()
         # GenerateDataForNum_DataItems()
         # GenerateDataForNum_Dimensionalities()

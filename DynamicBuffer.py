@@ -1,11 +1,17 @@
 from util import *
 class DynamicBuffer():
-    def __init__(self, size, dim, datatype='uint32'):
-        self.dimension = dim
-        self.size = size
-        self.length = 0
-        self._buffer = np.empty((size, dim))
-        self._buffer = np.full((size, dim), np.inf)
+    def __init__(self, size, dim, datatype='uint32', fileName = None):
+        if fileName is None:
+            self.dimension = dim
+            self.size = size
+            self.length = 0
+            self._buffer = np.empty((size, dim))
+            self._buffer = np.full((size, dim), np.inf)
+        else:
+            self._buffer = np.loadtxt(fileName, delimiter=',')
+            self.size = self._buffer.shape[0]
+            self.length = self.size
+            self.dimension = self._buffer.shape[1]
 
     def __len__(self):
         return self.length
@@ -24,7 +30,6 @@ class DynamicBuffer():
         :param dim: the dime
         """
         self._buffer = self._buffer[self._buffer[:,dim].argsort()]
-
 
 
     @property

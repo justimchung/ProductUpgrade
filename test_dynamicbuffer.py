@@ -26,6 +26,12 @@ class TestUtil(unittest.TestCase):
         self.assertEqual(self.dBuffer.buffer[0][0], 0)
         self.assertEqual(self.dBuffer.buffer[2][0], 1)
 
+    def test_constructorWithFileName(self):
+        aBuffer = DynamicBuffer(0, 0, fileName='data_uni_20_3_0.db')
+        self.assertEqual(len(aBuffer), 20000)
+        self.assertEqual(aBuffer.buffer[0][0], 79)
+
+
 if __name__ == '__main__':
     unittest.main()
 
