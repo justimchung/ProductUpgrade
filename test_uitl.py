@@ -92,6 +92,13 @@ class TestUtil(unittest.TestCase):
         test1 = np.array([0,0,0])
         self.assertEqual(getSubspaceUniqueID_numpy(test1), 0)
 
+    def test_retrieveSkylinePoints_numpy(self):
+        orgData = np.array([[10, 10, 10],[2, 9, 9],[3, 9, 9],[5, 7, 4]])
+        sky = retrieveSkylinePoints_numpy(orgData)
+        self.assertEqual(2, len(sky))
+        self.assertTrue(np.array_equal(np.array([2, 9, 9], sky[0])))
+        self.assertTrue(np.array_equal(np.array([5, 7, 4], sky[0])))
+
 
 
 if __name__ == '__main__':
