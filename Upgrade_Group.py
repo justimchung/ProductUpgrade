@@ -17,6 +17,9 @@ class UpgradeGroup:
     def addSkylinePoint(self, prod):
         self.dBuffer.append(prod)
 
+    def addSkylinePoints(self, skyBuf):
+        self.dBuffer.appendBuffer(skyBuf)
+
     def getSkylineBuffer(self):
         """
         return the buffer that stores the skyline points

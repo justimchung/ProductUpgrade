@@ -5,8 +5,7 @@ from Upgrade_Group import UpgradeGroup
 class TestUpgradeGroup(unittest.TestCase):
     def setUp(self):
         self.UpgradeGroup = UpgradeGroup(product = np.array([9, 8]), subspace= np.array([0,1]), size = 2, dim=2)
-
-
+        self.skyBuf = np.array([[1,2],[3,4],[5,6],[7,8],[9,10]])
 
     def test_getproduct(self):
         p = self.UpgradeGroup.getProduct()
@@ -19,6 +18,12 @@ class TestUpgradeGroup(unittest.TestCase):
         self.assertEqual(2, len(skyBuf))
         self.assertTrue(np.array_equal(skyBuf[0], np.array([4,5])))
         self.assertTrue(np.array_equal(skyBuf[1], np.array([7,5])))
+
+    def test_addSkylinePoints(self):
+        self.UpgradeGroup.addSkylinePoints(self.skyBuf)
+        skyBuf = self.UpgradeGroup.getSkylineBuffer()
+        self.assertEqual(5, len(skyBuf))
+        self.assertTrue(np.array_equal(skyBuf, np.array([[1,2],[3,4],[5,6],[7,8],[9,10]])))
 
     def test_sortByDim(self):
         self.UpgradeGroup.addSkylinePoint(np.array([4,6]))

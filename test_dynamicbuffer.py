@@ -26,11 +26,18 @@ class TestUtil(unittest.TestCase):
         self.assertEqual(self.dBuffer.buffer[0][0], 0)
         self.assertEqual(self.dBuffer.buffer[2][0], 1)
 
-    def test_constructorWithFileName(self):
-        aBuffer = DynamicBuffer(0, 0, fileName='data_uni_20_3_0.db')
-        self.assertEqual(len(aBuffer), 20000)
-        self.assertEqual(aBuffer.buffer[0][0], 79)
+    def test_constructorWithSkylineBuffer(self):
+        sBuf = np.array([[1,2,3], [4,5,6], [7,8,9],[10,11,12]])
+        aDynamicBuffer = DynamicBuffer(1, 0, skyBuf = sBuf)
+        self.assertEqual(len(aDynamicBuffer), 4)
+        self.assertTrue(np.array_equal(aDynamicBuffer.buffer, np.array([[1,2,3], [4,5,6], [7,8,9],[10,11,12]])))
 
+    def test_appendBuffer(self):
+        sBuf = np.array([[1,2,3], [4,5,6], [7,8,9],[10,11,12]])
+        aDynamicBuffer = DynamicBuffer(2, 3)
+        aDynamicBuffer.appendBuffer(sBuf)
+        self.assertEqual(len(aDynamicBuffer), 4)
+        self.assertTrue(np.array_equal(aDynamicBuffer.buffer, np.array([[1,2,3], [4,5,6], [7,8,9],[10,11,12]])))
 
 if __name__ == '__main__':
     unittest.main()
