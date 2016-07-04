@@ -1,14 +1,23 @@
+# -*- coding:utf-8 -*-
 from util import *
 class DynamicBuffer():
-    def __init__(self, size, dim, datatype='uint32', fileName = None):
-        if fileName is None:
+    def __init__(self, size, dim, datatype='uint32', **kwargs):
+        """
+        初始化 DynamicBuffer
+        :param size: the initial size of the buffer
+        :param dim: the dimensionality of the data item in the buffer
+        :param datatype: the data type of each element in a data item
+        :param kwargs: the optional parameter. Currently, the only optional parameter is 'skyBuf'.
+          skyBuf stands for the 'buffer of a set of skyline points'
+        """
+        if 'skyBuf' not in kwargs:
             self.dimension = dim
             self.size = size
             self.length = 0
             self._buffer = np.empty((size, dim))
             self._buffer = np.full((size, dim), np.inf)
         else:
-            self._buffer = np.loadtxt(fileName, delimiter=',')
+            self._buffer = kwargs['skyBuf']
             self.size = self._buffer.shape[0]
             self.length = self.size
             self.dimension = self._buffer.shape[1]
@@ -23,6 +32,13 @@ class DynamicBuffer():
         self._buffer[self.length:,].fill(np.inf)
         self._buffer[self.length] = point
         self.length += 1
+
+    def appendBuffer(self, points):
+        """
+        append a set of data points into the buffer
+        """
+        for p in points:
+            self.append(p)
 
     def sortByDim(self, dim):
         """
