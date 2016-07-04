@@ -60,10 +60,10 @@ class Upgrade_Algorithm:
 
 
 class New_Upgrade_Algorithm:
-    def __init__(self, uGroup, kValue, orgP):
+    def __init__(self, uGroup, kValue):
         self.upgradeGroup = uGroup
         self.kValue = kValue
-        self.orgP = orgP
+        self.orgP = uGroup.getProduct()
         self.minValBuf = np.full(self.upgradeGroup.getDIM(), np.inf)
         self.dim = uGroup.getDIM()
 
