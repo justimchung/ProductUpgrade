@@ -93,15 +93,28 @@ class TestUtil(unittest.TestCase):
         self.assertEqual(getSubspaceUniqueID_numpy(test1), 0)
 
     def test_retrieveSkylinePoints_numpy(self):
-        orgData = np.array([[10, 10, 10],[2, 9, 9],[3, 9, 9],[5, 7, 4]])
+        orgData = np.array([[10, 10, 10], [2, 9, 9], [3, 9, 9], [5, 7, 4]])
         sky = retrieveSkylinePoints_numpy(orgData)
         self.assertEqual(2, len(sky))
-        self.assertTrue(np.array_equal(np.array([2, 9, 9], sky[0])))
-        self.assertTrue(np.array_equal(np.array([5, 7, 4], sky[0])))
+        self.assertTrue(np.array_equal(np.array([2, 9, 9]), sky[0]))
+        self.assertTrue(np.array_equal(np.array([5, 7, 4]), sky[1]))
 
+    def test_cartesian(self):
+        result = cartesian(([1, 2, 3], [4, 5], [6, 7]))
+        self.assertTrue(np.array_equal(result,
+                                       np.array([[1, 4, 6],
+           [1, 4, 7],
+           [1, 5, 6],
+           [1, 5, 7],
+           [2, 4, 6],
+           [2, 4, 7],
+           [2, 5, 6],
+           [2, 5, 7],
+           [3, 4, 6],
+           [3, 4, 7],
+           [3, 5, 6],
+           [3, 5, 7]])))
 
 
 if __name__ == '__main__':
     unittest.main()
-
-
