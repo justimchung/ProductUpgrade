@@ -3,6 +3,8 @@ import numpy as np
 import util
 from collections import deque
 from Upgrade_Group import UpgradeGroup
+
+
 class Upgrade_Algorithm:
     def __init__(self, uGroup):
         self.group = uGroup
@@ -55,8 +57,6 @@ class Upgrade_Algorithm:
             currentMinCost = ugCost
             pMinCost = ptmp
         return currentMinCost, pMinCost
-
-
 
 
 class New_Upgrade_Algorithm:
