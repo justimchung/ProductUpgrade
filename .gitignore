@@ -136,3 +136,4 @@ ENV/
 
 .idea/encodings.xml
 *.db
+/Product_Upgrade_Sim_log.log

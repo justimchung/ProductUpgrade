@@ -2,6 +2,7 @@
 from numpy.random import *
 from math import pow
 from pylab import *
+import os
 import string
 
 valueLowerBound = 0
@@ -149,11 +150,27 @@ def GenerateDataForNum_Dimensionalities():
             points = generate_Anti_Points(di, d)
             saveDataItemsToFile("data_anti_%d_%d_%d.db" % (di / 1000, d, iter), points)
 
+def GenerateProduct(numPoints, dim, valueLB=101, valueUB=200):
+    points = []
+    for i in range(numPoints):
+        pt = []
+        for j in range(dim):
+            pt.append(uniform(valueLB, valueUB))
+        points.append(pt)
+    return points
 
 if __name__ == "__main__":
+    currentPath = os.path.dirname(os.path.abspath(__file__))
+    dim = 11
+    points = GenerateProduct(1000, dim)
+    saveDataItemsToFile(currentPath + "\data\product_uni_%d_%d_%d.db" % (1, dim, 0), points)
     for iter in range(5):
-        points = generate_Uni_Points(20000, 3)
-        saveDataItemsToFile("data_uni_%d_%d_%d.db" % (20, 3, iter), points)
+        points = generate_Uni_Points(100000, dim)
+        saveDataItemsToFile(currentPath + "\data\data_uni_%d_%d_%d.db" % (100, dim, iter), points)
+        points = generate_Corr_Points(100000, dim)
+        saveDataItemsToFile(currentPath + "\data\data_corr_%d_%d_%d.db" % (100, dim, iter), points)
+        points = generate_Anti_Points(100000, dim)
+        saveDataItemsToFile(currentPath + "\data\data_anti_%d_%d_%d.db" % (100, dim, iter), points)
         # GenerateDataForNum_DataItems()
         # GenerateDataForNum_DataItems()
         # GenerateDataForNum_Dimensionalities()
