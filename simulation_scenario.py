@@ -41,10 +41,10 @@ def effect_k_scenario():
         ProductBuffer = np.loadtxt(ProductFileName, delimiter=',')
         ProductIndex = 0
         for iter in range(numIteration):
-            logger.debug('[info]Dist = %s, dataSize = %d, dim = %d, k = %d, iter = %d' %
-                         (setting[distIndex], int(setting[datasizeIndex]), int(setting[dimIndex]),
-                                                                              int(setting[kValueIndex]), iter))
             DataFileName = getDataFileName(setting[distIndex], int(setting[datasizeIndex]), int(setting[dimIndex]), iter)
+            logger.debug('[info]Dist = %s, dataSize = %d, dim = %d, k = %d, iter = %d data_file = %s' %
+                         (setting[distIndex], int(setting[datasizeIndex]), int(setting[dimIndex]),
+                          int(setting[kValueIndex]), iter, DataFileName))
             aSim = sim.simulator(kValue=int(setting[kValueIndex]), fileName=DataFileName, algName=setting[algIndex],
                           product=ProductBuffer[ProductIndex])
             aSim.run()
