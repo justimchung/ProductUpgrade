@@ -11,5 +11,5 @@ import numpy
 setup(
     cmdclass = {'build_ext': build_ext},
     package_dir = {"ProductUpgrade": "."},
-    ext_modules = cythonize("kdom_util.pyx"), include_dirs=[numpy.get_include()]
+    ext_modules = [Extension("kdom_util_cython", ["kdom_util.pyx"], include_dirs=[numpy.get_include()])]
 )
