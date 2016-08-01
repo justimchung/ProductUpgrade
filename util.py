@@ -1,14 +1,11 @@
 import numpy as np
+import kdom_util
 
 def k_dom_by_point_numpy(p, kValue, aSkyline):
     ''' Test whether point p is k-dominated by point aSkyline
         return True if p is k-dominated by aSkyline; otherwise false'''
-    tmpV = np.subtract(p, aSkyline)
 
-    if np.count_nonzero(tmpV > 0) > 0 and np.count_nonzero(tmpV >= 0) >= kValue:
-        return True, aSkyline
-    else:
-        return False, None
+    return kdom_util.kDomByPointPy(p, aSkyline, kValue)
 
 def k_dom_by_point(p, kValue, aSkyline):
     ''' Test whether point p is k-dominated by point aSkyline
@@ -86,15 +83,8 @@ def retrieveSkylinePoints_numpy(orgData):
     :param orgData: the raw data set
     :return: a set of skyline points from orgData
     """
-    sky = []
     dim = len(orgData[0])
-
-    for i in range(len(orgData)):
-        p = orgData[i]
-        if not k_dom_by_points_numpy(p, dim, orgData):
-            sky.append(p)
-    return sky
-
+    return kdom_util.retrieveKDomSkylinePy(orgData, dim)
 
 def k_dom_by_points_numpy(p, kValue, points):
     ''' Test whether p can be k-dominated by any point residing in points
@@ -103,16 +93,7 @@ def k_dom_by_points_numpy(p, kValue, points):
     :param points: a set of points that may k-dominate p
     :return: return True if a point in points can k-dominate p otherwise return False
     '''
-    isKDom = False
-    domSK = points[0]
-
-    for i in range(len(points)):
-        isKDom, domSK = k_dom_by_point_numpy(p, kValue, points[i])
-
-        if isKDom == True:
-            break
-
-    return (isKDom)
+    return kdom_util.kDomByPointsPy(p, points, kValue)
 
 def cartesian(arrays, out=None):
     """
