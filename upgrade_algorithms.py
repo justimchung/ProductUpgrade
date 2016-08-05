@@ -11,6 +11,7 @@ class Upgrade_Algorithm:
         #the dimensionality of the data space
         self.dataspaceDim = uGroup.getDIM()
 
+    @profile
     def run(self):
         subspace = self.group.getSubspace()
         pOrigin = self.group.getProduct()
@@ -34,6 +35,7 @@ class Upgrade_Algorithm:
 
         return pMinCost, minCost
 
+
     def __upgradeProductMultipDim(self, currentDim, itemIndex, skyBuffer, subspace):
         ptmp2 = np.zeros(self.dataspaceDim)
         si = skyBuffer[itemIndex]
@@ -51,6 +53,7 @@ class Upgrade_Algorithm:
         ptmp[dim] = dimMinValue
         return ptmp
 
+    @profile
     def __determineMinCostProduct(self, currentMinCost, p, pMinCost, ptmp):
         ugCost = util.getCost_numpy(ptmp, p)
         if ugCost < currentMinCost:
