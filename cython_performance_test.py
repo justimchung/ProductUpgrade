@@ -1,50 +1,62 @@
 # -*- coding:utf-8 -*-
-import kdom_util_cython
+import kdom_util
+import unittest
 import time
 import numpy as np
+import simulator as sim
 import os
-import util
+
 """
 這個模組是用來測試不同函式的實作，所造成的效能差異
 """
 
-def calc_pure_python_performance(pointBuffer, point, kValue):
-    start_time = time.time()
-    for skyp in pointBuffer:
-        kdom_util_cython.k_dom_by_point_cython(point, kValue, skyp)
-    end_time = time.time()
-    secs = end_time - start_time
-    print(secs)
+class TestUtil(unittest.TestCase):
+    def setUp(self):
+        self.buf = np.array([
+            [1, 1, 1, 3, 3, 3],  # 4-dom skyline
+            [3, 3, 3, 1, 1, 1],  # 4-dom skyline
+            [2, 2, 2, 4, 2, 2],  # 5-dom skyline
+            [4, 4, 4, 0, 4, 4],  # 6-dom skyline
+            [3, 3, 3, 2, 2, 2]  # nothing
+        ])
 
 
-def calc_pure_python_performance2(pointBuffer, point, kValue):
-    start_time = time.time()
-    for skyp in pointBuffer:
-        kdom_util_cython.k_dom_by_point_cython2(point, kValue, skyp)
-    end_time = time.time()
-    secs = end_time - start_time
-    print(secs)
+    def test_k_dom_by_point(self):
+        self.assertTrue(kdom_util.kDomByPointPy(self.buf[4], self.buf[1], 6))
+        self.assertTrue(kdom_util.kDomByPointPy(self.buf[4], self.buf[1], 5))
+        self.assertFalse(kdom_util.kDomByPointPy(self.buf[0], self.buf[0], 5))
+        self.assertFalse(kdom_util.kDomByPointPy(self.buf[0], self.buf[1], 5))
+        self.assertFalse(kdom_util.kDomByPointPy(self.buf[1], self.buf[1], 5))
+        self.assertFalse(kdom_util.kDomByPointPy(self.buf[1], self.buf[0], 5))
 
-def calc_pure_python_kdombypoints_performance(pointBuffer, kValue):
-    start_time = time.time()
-    for p in pointBuffer:
-        util.k_dom_by_points_numpy(p, kValue, pointBuffer)
-    end_time = time.time()
-    secs = end_time - start_time
-    print(secs)
+    def test_k_dom_by_points(self):
+        self.assertTrue(kdom_util.kDomByPointsPy(self.buf[4], self.buf, 5))
+        self.assertTrue(kdom_util.kDomByPointsPy(self.buf[4], self.buf, 6))
+        self.assertTrue(kdom_util.kDomByPointsPy(self.buf[4], self.buf, 4))
+        self.assertTrue(kdom_util.kDomByPointsPy(self.buf[0], self.buf, 3))
+        self.assertFalse(kdom_util.kDomByPointsPy(self.buf[0], self.buf, 6))
+        self.assertFalse(kdom_util.kDomByPointsPy(self.buf[0], self.buf, 5))
+        self.assertFalse(kdom_util.kDomByPointsPy(self.buf[3], self.buf, 6))
+        self.assertTrue(kdom_util.kDomByPointsPy(self.buf[3], self.buf, 5))
 
-def calc_cpython_kdombypoints_performance(pointBuffer, kValue):
-    start_time = time.time()
-    for p in pointBuffer:
-        kdom_util_cython.k_dom_by_points_cython(p, kValue, pointBuffer)
-    end_time = time.time()
-    secs = end_time - start_time
-    print(secs)
+    def test_retrieve_KSkylines(self):
+        kdomSky = kdom_util.retrieveKDomSkylinePy(self.buf, 4)
+        self.assertEqual(2, len(kdomSky))
+        self.assertTrue(np.array_equal(np.array([[1,1,1,3,3,3], [3,3,3,1,1,1]]), kdomSky))
+        kdomSky = kdom_util.retrieveKDomSkylinePy(self.buf, 5)
+        self.assertEqual(3, len(kdomSky))
+        self.assertTrue(np.array_equal(np.array([[1,1,1,3,3,3], [3,3,3,1,1,1],[2,2,2,4,2,2]]), kdomSky))
+
+
 
 if __name__ == '__main__':
+    #unittest.main()
     pathName = os.path.dirname(os.path.abspath(__file__))
-    buf = np.loadtxt(pathName + "\data\data_corr_100_11_0.db", delimiter=",")
-    calc_pure_python_performance(buf, buf[0], 11)
-    calc_pure_python_performance2(buf, buf[0], 11)
-    #calc_cpython_kdombypoints_performance(buf, 11)
-    calc_pure_python_kdombypoints_performance(buf, 11)
+    ProductBuffer = np.loadtxt(pathName + "\data\product_uni_1_5_0.db", delimiter=",")
+    aSim = sim.simulator(kValue=4, fileName=os.path.dirname(os.path.abspath(__file__)) + '\data\data_corr_100_5_0.db',
+                         algName='Upgrade_Algorithm',
+                         product=ProductBuffer[0])
+    start_time = time.time()
+    aSim.run()
+    end_time = time.time()
+    print(end_time-start_time)
