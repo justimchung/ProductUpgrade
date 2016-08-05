@@ -24,7 +24,7 @@ bool kDomByPoint(std::vector<int> &p, std::vector<int> &q, int k)
 bool kDomByPoints(std::vector<int> &p, std::vector<std::vector<int> > &buffer, int k)
 {
 	for (std::vector<std::vector<int> >::iterator it = buffer.begin();
-	it != buffer.end(); it++)
+		it != buffer.end(); it++)
 	{
 		if (kDomByPoint(p, *it, k) == true)
 			return true;
@@ -36,11 +36,11 @@ std::vector<std::vector<int>> retrieveKDomSkyline(std::vector< std::vector<int> 
 {
 	std::vector<std::vector<int>> result;
 	for (std::vector<std::vector<int> >::iterator it = buffer.begin();
-	it != buffer.end(); it++)
+		it != buffer.end(); it++)
 	{
 		bool isDominant = true;
 		for (std::vector<std::vector<int> >::iterator itR = result.begin();
-		itR != result.end();)
+			itR != result.end();)
 		{
 			if (kDomByPoint(*it, *itR, k))
 			{
@@ -60,10 +60,10 @@ std::vector<std::vector<int>> retrieveKDomSkyline(std::vector< std::vector<int> 
 	}
 
 	for (std::vector<std::vector<int> >::iterator it = buffer.begin();
-	it != buffer.end(); it++)
+		it != buffer.end(); it++)
 	{
 		for (std::vector<std::vector<int> >::iterator itR = result.begin();
-		itR != result.end();)
+			itR != result.end();)
 		{
 			if (kDomByPoint(*itR, *it, k))
 			{
@@ -73,7 +73,18 @@ std::vector<std::vector<int>> retrieveKDomSkyline(std::vector< std::vector<int> 
 			{
 				itR++;
 			}
-		}		
+		}
 	}
 	return result;
+}
+
+int getCostCython(std::vector<int> &pUpgrade, std::vector<int> &pOriginal)
+{
+	int cost = 0;
+	unsigned int len = pUpgrade.size();
+	for (unsigned int i = 0; i < len; i++)
+	{
+		cost += (pOriginal[i] - pUpgrade[i]);
+	}
+	return cost;
 }

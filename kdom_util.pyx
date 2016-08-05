@@ -9,6 +9,7 @@ cdef extern from "Source.h":
     cdef bint kDomByPoint(vector[int] &p, vector[int] &q, int k)
     cdef bint kDomByPoints(vector[int] &p, vector[vector[int]] &buf, int k)
     cdef vector[vector[int]] retrieveKDomSkyline(vector[vector[int]] &buf, int k)
+    cdef int getCostCython(vector[int] &pUpgrade, vector[int] &pOriginal)
 
 def kDomByPointPy(p, q, k):
     """
@@ -38,3 +39,12 @@ def retrieveKDomSkylinePy(buf, k):
     :return: 由 buf 中過濾出 k-dom skyline，並回傳
     """
     return retrieveKDomSkyline(buf, k)
+
+def getCostPy(pUpgrade, pOriginal):
+    """
+    取得 pOriginal 升級到 pUpgrade 的成本
+    :param pUpgrade: 升級後的產品
+    :param pOriginal:本來的產品
+    :return: 升級的成本
+    """
+    return getCostCython(pUpgrade, pOriginal)
