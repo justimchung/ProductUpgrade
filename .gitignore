@@ -137,3 +137,8 @@ ENV/
 .idea/encodings.xml
 *.db
 /Product_Upgrade_Sim_log.log
+cython_performance_test.py.lprof
+data/
+kdom_util.c
+kdom_util.cpp
+kdom_util.html
