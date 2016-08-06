@@ -36,6 +36,7 @@ class Upgrade_Algorithm:
         return pMinCost, minCost
 
 
+    @profile
     def __upgradeProductMultipDim(self, currentDim, itemIndex, skyBuffer, subspace):
         ptmp2 = np.zeros(self.dataspaceDim)
         si = skyBuffer[itemIndex]
