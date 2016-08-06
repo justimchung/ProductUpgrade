@@ -161,7 +161,7 @@ def GenerateProduct(numPoints, dim, valueLB=101, valueUB=200):
 
 if __name__ == "__main__":
     currentPath = os.path.dirname(os.path.abspath(__file__))
-    dim = 11
+    dim = 5
     points = GenerateProduct(1000, dim)
     saveDataItemsToFile(currentPath + "\data\product_uni_%d_%d_%d.db" % (1, dim, 0), points)
     for iter in range(5):
