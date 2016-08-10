@@ -38,7 +38,7 @@ def effect_k_scenario():
     simSettings = generate_simulation_settings(algNames, datasizes, dims, dists, kvalues)
     for setting in simSettings:
         ProductFileName = getProductFileName(int(setting[dimIndex]))
-        ProductBuffer = np.loadtxt(ProductFileName, delimiter=',')
+        ProductBuffer = np.loadtxt(ProductFileName, delimiter=',', dtype='int32')
         ProductIndex = 0
         for iter in range(numIteration):
             DataFileName = getDataFileName(setting[distIndex], int(setting[datasizeIndex]), int(setting[dimIndex]), iter)

@@ -8,7 +8,7 @@ import upgrade_algorithms as ualg
 
 class simulator:
     def __init__(self, **kwargs):
-        self.rawDataBuffer = np.loadtxt(kwargs['fileName'], delimiter=',')
+        self.rawDataBuffer = np.loadtxt(kwargs['fileName'], delimiter=',', dtype='int32')
         self.skyBuffer = self.__retriveSkylines()
         self.kValue = kwargs['kValue']
         self.product = kwargs['product']
