@@ -4,6 +4,7 @@
 # use python cython_setup.py build_ext --inplace to complier the source code
 
 from libcpp.vector cimport vector
+from cython cimport boundscheck, wraparound
 
 cdef extern from "Source.h":
     cdef bint kDomByPoint(vector[int] &p, vector[int] &q, int k)
@@ -38,3 +39,15 @@ def retrieveKDomSkylinePy(buf, k):
     :return: 由 buf 中過濾出 k-dom skyline，並回傳
     """
     return retrieveKDomSkyline(buf, k)
+
+@boundscheck(False)
+@wraparound(False)
+def upgradeProductMultipleDimPy(int currentDim, int itemIndex, int[:,:] skyBuf, int[:] subspace, int[:] upgradeProduct):
+    cdef:
+        int k = 0
+        int N = subspace.shape[0]
+    for k in range(N):
+        if k == currentDim:
+            upgradeProduct[k] = skyBuf[itemIndex + 1, k] - 1
+        else:
+            upgradeProduct[k]= skyBuf[itemIndex, k] - 1
