@@ -55,7 +55,7 @@ def getCost(pUpgrade, pOriginal):
 def getCost_numpy(pUpgrade, pOriginal):
     '''Return the upgrade cost for upgrading pOriginal to pUpgrade'''
 
-    return np.sum(np.subtract(pOriginal, pUpgrade))
+    return kdom_util.getCostPy(pUpgrade, pOriginal)
 
 def getDominateSubspace_numpy(p, psky):
     '''Return a list A which indicate the subspace that psky is superial over p.'''

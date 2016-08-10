@@ -37,6 +37,7 @@ class Upgrade_Algorithm:
         return pMinCost, minCost
 
 
+    @profile
     def __upgradeProductMultipDim(self, currentDim, itemIndex, skyBuffer, subspace):
         upgradedProduct = np.zeros(self.dataspaceDim, dtype='int32')
         kdom_util.upgradeProductMultipleDimPy(int(currentDim), int(itemIndex), skyBuffer, subspace, upgradedProduct)

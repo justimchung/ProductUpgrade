@@ -26,8 +26,13 @@ class TestUtil(unittest.TestCase):
         self.assertTrue(iskDom)
         iskDom, sk = k_dom_by_point(self.p, 2, self.oneDomSky)
         self.assertFalse(iskDom)
+
     def test_getCost(self):
         cost = getCost(self.aSky, self.p)
+        self.assertEqual(cost, 6)
+
+    def test_getCostNumPy(self):
+        cost = getCost_numpy(self.aSky, self.p)
         self.assertEqual(cost, 6)
 
     def test_k_dom_by_points(self):
