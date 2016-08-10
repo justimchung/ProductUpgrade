@@ -1,6 +1,7 @@
 # -*-coding: utf-8 -*-
 import numpy as np
 import util
+import kdom_util
 from collections import deque
 from Upgrade_Group import UpgradeGroup
 
@@ -22,7 +23,7 @@ class Upgrade_Algorithm:
 
             self.group.sortByDim(currentDim)
 
-            skyBuffer = self.group.getSkylineBuffer()
+            skyBuffer = self.group.getSkylineBuffer().astype(dtype='int32', copy=False)
 
             ptmp = self.__upgradeProductInOneDim(currentDim, pOrigin, skyBuffer)
 
@@ -37,15 +38,9 @@ class Upgrade_Algorithm:
 
 
     def __upgradeProductMultipDim(self, currentDim, itemIndex, skyBuffer, subspace):
-        ptmp2 = np.zeros(self.dataspaceDim)
-        si = skyBuffer[itemIndex]
-        sj = skyBuffer[itemIndex + 1]
-        for k in range(len(subspace)):
-            if k == currentDim:
-                ptmp2[k] = sj[k] - 1
-            else:
-                ptmp2[k] = si[k] - 1
-        return ptmp2
+        upgradedProduct = np.zeros(self.dataspaceDim, dtype='int32')
+        kdom_util.upgradeProductMultipleDimPy(int(currentDim), int(itemIndex), skyBuffer, subspace, upgradedProduct)
+        return upgradedProduct
 
     def __upgradeProductInOneDim(self, dim, p, skyBuffer):
         ptmp = np.copy(p)
