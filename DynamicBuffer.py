@@ -14,7 +14,7 @@ class DynamicBuffer():
             self.dimension = dim
             self.size = size
             self.length = 0
-            self._buffer = np.empty((size, dim))
+            self._buffer = np.empty((size, dim), dtype=datatype)
             self._buffer = np.full((size, dim), np.inf)
         else:
             self._buffer = kwargs['skyBuf']
@@ -38,7 +38,7 @@ class DynamicBuffer():
         append a set of data points into the buffer
         """
         for p in points:
-            self.append(p)
+            self.append(np.array(p, dtype='int32'))
 
     def sortByDim(self, dim):
         """
