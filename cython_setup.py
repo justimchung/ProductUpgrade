@@ -6,6 +6,8 @@
 
 from distutils.core import setup
 from Cython.Build import cythonize
+import os
+import numpy
 
 # Use python cython_setup.py build_ext --inplace
 # to compile
@@ -13,4 +15,5 @@ from Cython.Build import cythonize
 setup(
   name = "k_dom_util",
   ext_modules = cythonize('*.pyx'),
+  include_dirs=[numpy.get_include(), os.path.join(numpy.get_include(), 'numpy')]
 )
