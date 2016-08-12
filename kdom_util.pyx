@@ -5,6 +5,7 @@
 
 from libcpp.vector cimport vector
 from cython cimport boundscheck, wraparound
+cimport numpy as np
 
 cdef extern from "Source.h":
     cdef bint kDomByPoint(vector[int] &p, vector[int] &q, int k)
@@ -42,7 +43,19 @@ def retrieveKDomSkylinePy(buf, k):
 
 @boundscheck(False)
 @wraparound(False)
-def upgradeProductMultipleDimPy(int currentDim, int itemIndex, int[:,:] skyBuf, int[:] subspace, int[:] upgradeProduct):
+def getCostPy(int[::1] pUpgrade, int[::1] pOriginal):
+    cdef:
+        int k = 0
+        int N = pUpgrade.shape[0]
+        int cost = 0
+    for k in range(N):
+        cost += (pOriginal[k] - pUpgrade[k])
+    return cost
+
+
+@boundscheck(False)
+@wraparound(False)
+def upgradeProductMultipleDimPy(int currentDim, int itemIndex, int[:,::1] skyBuf, int[::1] subspace, int[::1] upgradeProduct):
     cdef:
         int k = 0
         int N = subspace.shape[0]
