@@ -11,11 +11,10 @@ class Upgrade_Algorithm:
         self.group = uGroup
         #the dimensionality of the data space
         self.dataspaceDim = uGroup.getDIM()
-
     @profile
     def run(self):
         subspace = self.group.getSubspace()
-        pOrigin = self.group.getProduct()
+        pOrigin = self.group.getProduct().astype(dtype='int32', copy=False)
         pMinCost = None
         minCost = np.inf
 
@@ -29,19 +28,11 @@ class Upgrade_Algorithm:
 
             minCost, pMinCost = self.__determineMinCostProduct(minCost, pOrigin, pMinCost, ptmp)
 
-            for j in range(len(skyBuffer) - 1):
-                ptmp = self.__upgradeProductMultipDim(currentDim, j, skyBuffer, subspace)
+            pMinCost = kdom_util.getMinCostProductByUpgradingMultipleDimPy(currentDim, skyBuffer, subspace, pMinCost, pOrigin)
 
-                minCost, pMinCost = self.__determineMinCostProduct(minCost, pOrigin, pMinCost, ptmp)
+            minCost = util.getCost_numpy(np.asarray(pMinCost, dtype='int32'), pOrigin)
 
         return pMinCost, minCost
-
-
-    @profile
-    def __upgradeProductMultipDim(self, currentDim, itemIndex, skyBuffer, subspace):
-        upgradedProduct = np.zeros(self.dataspaceDim, dtype='int32')
-        kdom_util.upgradeProductMultipleDimPy(int(currentDim), int(itemIndex), skyBuffer, subspace, upgradedProduct)
-        return upgradedProduct
 
     def __upgradeProductInOneDim(self, dim, p, skyBuffer):
         ptmp = np.copy(p)
@@ -49,7 +40,6 @@ class Upgrade_Algorithm:
         ptmp[dim] = dimMinValue
         return ptmp
 
-    @profile
     def __determineMinCostProduct(self, currentMinCost, p, pMinCost, ptmp):
         ugCost = util.getCost_numpy(ptmp, p)
         if ugCost < currentMinCost:
@@ -66,6 +56,7 @@ class New_Upgrade_Algorithm:
         self.minValBuf = np.full(self.upgradeGroup.getDIM(), np.inf)
         self.dim = uGroup.getDIM()
 
+    @profile
     def run(self):
         queue = deque()
         skyBuf = self.upgradeGroup.getSkylineBuffer()

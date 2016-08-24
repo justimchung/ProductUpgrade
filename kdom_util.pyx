@@ -11,6 +11,7 @@ cdef extern from "Source.h":
     cdef bint kDomByPoint(vector[int] &p, vector[int] &q, int k)
     cdef bint kDomByPoints(vector[int] &p, vector[vector[int]] &buf, int k)
     cdef vector[vector[int]] retrieveKDomSkyline(vector[vector[int]] &buf, int k)
+    cdef vector[int] getMinCostProductUsingMultipleDim(int currentDIM, vector[vector[int]] &skyBuf, vector[int] &subspace, vector[int] &minCostProduct, vector[int] &origionalProduct)
 
 def kDomByPointPy(p, q, k):
     """
@@ -64,3 +65,7 @@ def upgradeProductMultipleDimPy(int currentDim, int itemIndex, int[:,::1] skyBuf
             upgradeProduct[k] = skyBuf[itemIndex + 1, k] - 1
         else:
             upgradeProduct[k]= skyBuf[itemIndex, k] - 1
+
+def getMinCostProductByUpgradingMultipleDimPy(currentDIM, skyBuf, subspace, minCostProduct, origionalProduct):
+    return getMinCostProductUsingMultipleDim(currentDIM, skyBuf, subspace, minCostProduct, origionalProduct)
+
