@@ -11,7 +11,7 @@ class Upgrade_Algorithm:
         self.group = uGroup
         #the dimensionality of the data space
         self.dataspaceDim = uGroup.getDIM()
-    @profile
+
     def run(self):
         subspace = self.group.getSubspace()
         pOrigin = self.group.getProduct().astype(dtype='int32', copy=False)
@@ -32,7 +32,7 @@ class Upgrade_Algorithm:
 
             minCost = util.getCost_numpy(np.asarray(pMinCost, dtype='int32'), pOrigin)
 
-        return pMinCost, minCost
+        return np.asarray(pMinCost, dtype='int32'), minCost
 
     def __upgradeProductInOneDim(self, dim, p, skyBuffer):
         ptmp = np.copy(p)
@@ -55,8 +55,6 @@ class New_Upgrade_Algorithm:
         self.orgP = uGroup.getProduct()
         self.minValBuf = np.full(self.upgradeGroup.getDIM(), np.inf)
         self.dim = uGroup.getDIM()
-
-    @profile
     def run(self):
         queue = deque()
         skyBuf = self.upgradeGroup.getSkylineBuffer()
@@ -70,7 +68,7 @@ class New_Upgrade_Algorithm:
             else:
                 self.__modify_minValueBuf(p)
 
-        minCost = util.getCost_numpy(self.minValBuf, self.orgP)
+        minCost = util.getCost_numpy(self.minValBuf.astype(dtype='int32', copy=False), np.asarray(self.orgP, dtype='int32'))
         return self.minValBuf, minCost
 
 
@@ -89,7 +87,7 @@ class New_Upgrade_Algorithm:
         dict = {}
         skyBuf = UG.getSkylineBuffer()
         for skyP in skyBuf:
-            isKDom, aP = util.k_dom_by_point_numpy(p, self.kValue, skyP)
+            isKDom = util.k_dom_by_point_numpy(p, self.kValue, skyP)
             if not isKDom:
                 continue
             subSpace = util.getDominateSubspace_numpy(p, skyP)
