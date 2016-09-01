@@ -32,7 +32,7 @@ class TestUtil(unittest.TestCase):
         self.assertEqual(cost, 6)
 
     def test_getCostNumPy(self):
-        cost = getCost_numpy(self.aSky, self.p)
+        cost = getCost_numpy(np.asarray(self.aSky, dtype='int32'), np.asarray(self.p, dtype='int32'))
         self.assertEqual(cost, 6)
 
     def test_k_dom_by_points(self):
@@ -92,9 +92,13 @@ class TestUtil(unittest.TestCase):
         self.assertTrue(np.array_equal(r, np.array([2])))
 
     def test_getSubspaceUniqueID_numpy(self):
-        test1 = np.array([1,1,1])
+        test1 = np.array([0,1,2])
         self.assertEqual(getSubspaceUniqueID_numpy(test1), 7)
-        test1 = np.array([0,0,0])
+        test1 = np.array([0])
+        self.assertEqual(getSubspaceUniqueID_numpy(test1), 1)
+        test1 = np.array([0,1,3,4])
+        self.assertEqual(getSubspaceUniqueID_numpy(test1), 27)
+        test1 = np.array([])
         self.assertEqual(getSubspaceUniqueID_numpy(test1), 0)
 
     def test_retrieveSkylinePoints_numpy(self):

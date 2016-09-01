@@ -63,7 +63,7 @@ def getDominateSubspace_numpy(p, psky):
     for i in range(len(p)):
         if p[i] > psky[i]:
             l.append(i)
-    return l
+    return np.asarray(l, dtype='int32')
 
 
 def getSubspaceUniqueID_numpy(subspace):
@@ -72,9 +72,11 @@ def getSubspaceUniqueID_numpy(subspace):
     :param subspace: the subspace to be determined the unique id
     :return: the unique id of the subspace
     """
+    if len(subspace) == 0:
+        return 0
     uid = 0
     for i in range(len(subspace)):
-        uid += subspace[i] * 2**i
+        uid += 2 ** subspace[i]
     return uid
 
 def retrieveSkylinePoints_numpy(orgData):
