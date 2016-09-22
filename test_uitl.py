@@ -50,35 +50,35 @@ class TestUtil(unittest.TestCase):
         self.assertFalse(result)
 
     def test_k_dom_by_point_numpy(self):
-        iskDom = k_dom_by_point_numpy(self.p, 3, np.array(self.aSky))
+        iskDom = k_dom_by_point_numpy(np.array(self.p), 3, np.array(self.aSky))
         self.assertTrue(iskDom)
-        iskDom = k_dom_by_point_numpy(self.p, 2, np.array(self.aSky))
+        iskDom = k_dom_by_point_numpy(np.array(self.p), 2, np.array(self.aSky))
         self.assertTrue(iskDom)
-        iskDom = k_dom_by_point_numpy(self.p, 1, np.array(self.aSky))
+        iskDom = k_dom_by_point_numpy(np.array(self.p), 1, np.array(self.aSky))
         self.assertTrue(iskDom)
-        iskDom = k_dom_by_point_numpy(self.p, 3, np.array(self.notSky))
+        iskDom = k_dom_by_point_numpy(np.array(self.p), 3, np.array(self.notSky))
         self.assertFalse(iskDom)
-        iskDom = k_dom_by_point_numpy(self.p, 2, np.array(self.twoDomSky))
+        iskDom = k_dom_by_point_numpy(np.array(self.p), 2, np.array(self.twoDomSky))
         self.assertTrue(iskDom)
-        iskDom = k_dom_by_point_numpy(self.p, 3, np.array(self.twoDomSky))
+        iskDom = k_dom_by_point_numpy(np.array(self.p), 3, np.array(self.twoDomSky))
         self.assertFalse(iskDom)
-        iskDom = k_dom_by_point_numpy(self.p, 1, np.array(self.oneDomSky))
+        iskDom = k_dom_by_point_numpy(np.array(self.p), 1, np.array(self.oneDomSky))
         self.assertTrue(iskDom)
-        iskDom = k_dom_by_point_numpy(self.p, 2, np.array(self.oneDomSky))
+        iskDom = k_dom_by_point_numpy(np.array(self.p), 2, np.array(self.oneDomSky))
         self.assertFalse(iskDom)
 
     def test_k_dom_by_points_numpy(self):
         skylines = np.array([[6, 9, 6], [8, 5, 6], [6, 5, 7]])
-        result = k_dom_by_points_numpy(self.p, 2, skylines)
+        result = k_dom_by_points_numpy(np.array(self.p), 2, skylines)
         self.assertTrue(result)
 
-        result = k_dom_by_points_numpy([1, 1, 1], 2, skylines)
+        result = k_dom_by_points_numpy(np.array([1, 1, 1]), 2, skylines)
         self.assertFalse(result)
 
-        result = k_dom_by_points_numpy(self.p, 3, skylines)
+        result = k_dom_by_points_numpy(np.array(self.p), 3, skylines)
         self.assertTrue(result)
 
-        result = k_dom_by_points_numpy([5, 10, 10], 3, skylines)
+        result = k_dom_by_points_numpy(np.array([5, 10, 10]), 3, skylines)
         self.assertFalse(result)
 
     def test_getDominateSubspace_numpy(self):

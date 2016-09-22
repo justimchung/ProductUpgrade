@@ -2,10 +2,44 @@
 # distutils: language = c++
 # distutils: sources = Source.cpp
 # use python cython_setup.py build_ext --inplace to complier the source code
-
+import numpy as np
 from libcpp.vector cimport vector
 from cython cimport boundscheck, wraparound
 cimport numpy as np
+
+DTYPE = np.int
+ctypedef np.int_t DTYPE_t
+
+
+@boundscheck(False)
+@wraparound(False)
+cdef bint kDomByPointCython(np.ndarray[DTYPE_t, ndim=1] p, np.ndarray[DTYPE_t, ndim=1] q, int k):
+    cdef int len = p.shape[0]
+    cdef int i = 0
+    cdef int numWorstDim = 0
+    cdef int numQualifyDim = 0
+    cdef bint isKDom = False
+    for i in range(len):
+        if p[i] >= q[i]:
+            numQualifyDim=numQualifyDim+1
+        if p[i] > q[i]:
+            numWorstDim=numWorstDim+1
+        if (numQualifyDim >= k) and (numWorstDim >0):
+            isKDom = True
+            break
+    return isKDom
+
+
+@boundscheck(False)
+@wraparound(False)
+cdef bint kDomByPointsCython(np.ndarray[DTYPE_t, ndim=1] p, np.ndarray[DTYPE_t, ndim=2] buf, int k):
+    cdef int len = buf.shape[0]
+    cdef int i = 0
+    for i in range(len):
+        if kDomByPointCython(p, buf[i], k) == True:
+            return True
+    return False
+
 
 cdef extern from "Source.h":
     cdef bint kDomByPoint(vector[int] &p, vector[int] &q, int k)
@@ -21,7 +55,7 @@ def kDomByPointPy(p, q, k):
     :param k: k 值
     :return: 若 q 可以 k-dom p，那回傳 true，否則回傳 false
     """
-    return kDomByPoint(p, q, k)
+    return kDomByPointCython(p, q, k)
 
 def kDomByPointsPy(p, buf, k):
     """
@@ -31,7 +65,7 @@ def kDomByPointsPy(p, buf, k):
     :param k:k 值
     :return: 若 p 被 buf 中的某個元素 k-dom，回傳 true，否則回傳 false
     """
-    return kDomByPoints(p, buf, k)
+    return kDomByPointsCython(p, buf, k)
 
 def retrieveKDomSkylinePy(buf, k):
     """
