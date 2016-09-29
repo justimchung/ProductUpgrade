@@ -15,8 +15,6 @@ cdef class upgProduct:
     self.attributes is the attribute list of the product
     self.getUpgCost returns the upgrade cost of the product
     """
-    cdef public int[::1] attributes
-    cdef double upgCost
     def __init__(self, int[::1] attri):
         self.attributes = attri
         self.upgCost = 0.0
