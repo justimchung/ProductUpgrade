@@ -13,7 +13,7 @@ ctypedef np.int_t DTYPE_t
 
 @boundscheck(False)
 @wraparound(False)
-cdef bint kDomByPointCython(np.ndarray[DTYPE_t, ndim=1] p, np.ndarray[DTYPE_t, ndim=1] q, int k):
+cdef bint kDomByPointCython(int[::1] p, int[::1] q, int k):
     cdef int len = p.shape[0]
     cdef int i = 0
     cdef int numWorstDim = 0
@@ -32,13 +32,21 @@ cdef bint kDomByPointCython(np.ndarray[DTYPE_t, ndim=1] p, np.ndarray[DTYPE_t, n
 
 @boundscheck(False)
 @wraparound(False)
-cdef bint kDomByPointsCython(np.ndarray[DTYPE_t, ndim=1] p, np.ndarray[DTYPE_t, ndim=2] buf, int k):
+cdef bint kDomByPointsCython(int[::1] p, int[:,::1] buf, int k):
     cdef int len = buf.shape[0]
     cdef int i = 0
     for i in range(len):
         if kDomByPointCython(p, buf[i], k) == True:
             return True
     return False
+
+cdef int[::1] getMinCostProductUsingMultipleDimCython(int currentDIM, int[:,::1] skyBuf, int[::1] subspace,  int[::1] minCostProduct, int[::1] originalProduct):
+    cdef int N = skyBuf.shape[0]
+    cdef int i = 0
+    cdef minCost = getCostPy(minCostProduct, originalProduct)
+
+cdef upgradeProductMultipleDim(int currentDIM, int basedID, int[:,::1] skyBuf, int[::1] subspace):
+    cdef int[::1] aProduct = np.empty()
 
 
 cdef extern from "Source.h":
