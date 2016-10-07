@@ -16,16 +16,15 @@ cdef class productQueue:
     This is a minHeap for upgProduct.
     The first element of the queue is an upgProduct with min upgrading cost
     """
-    cdef list data
     def __init__(self):
         self.data = []
 
-    cdef inline __push(self, upgProduct p):
+    cdef __push(self, upgProduct p):
         heapq.heappush(self.data, (p.getCost(), p))
 
     @boundscheck(False)
     @wraparound(False)
-    cdef inline upgProduct __pop(self):
+    cdef upgProduct __pop(self):
         return heapq.heappop(self.data)[1]
 
     cpdef int getSize(self):
@@ -36,3 +35,8 @@ cdef class productQueue:
 
     def pop(self):
         return self.__pop()
+
+    @boundscheck(False)
+    @wraparound(False)
+    cpdef double getMinCost(self):
+        return self.data[0][0]
