@@ -54,7 +54,7 @@ if __name__ == '__main__':
     pathName = os.path.dirname(os.path.abspath(__file__))
     ProductBuffer = np.loadtxt(pathName + "\data\product_uni_1_5_0.db", delimiter=",")
     aSim = sim.simulator(kValue=4, fileName=os.path.dirname(os.path.abspath(__file__)) + '\data\data_corr_100_5_0.db',
-                         algName='New_Upgrade_Algorithm',
+                         algName='Upgrade_Algorithm',
                          product=ProductBuffer[0])
     start_time = time.time()
     aSim.run()
